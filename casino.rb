@@ -10,26 +10,54 @@
     # 3 different Classes (place bet/Win/Loss)
 # Player's bankroll goes up and down with wins and losses
 
+require_relative 'bankroll.rb'
+#Arbitrarily (--Presidentially) give them $1200
+@bankroll = Bankroll.new(1200)
 
-# def welcome
-# # WELCOME TO THE RUBY CASINO
-    #
-# end
-
-#SAM
-def menu
-# # MAIN MENU AND GAME SELECTION
+def welcome_screen
+    puts "WELCOME TO THE RUBY CASINO"
+          #display ASCII art here
+          #play music
+          #Sound on/off option
+          puts "You have #{@bankroll.display_wallet} Donnie Dollars."
+          puts "What is your gambling nickname?"
+            @name = gets.strip.to_s
+          puts "Thank you for sharing your stimulus check with us, #{@name}."
+          menu
 end
 
-#ERNIE
-# def player
-  puts "What is your gambling name?"
-#   #How much would you deposit?
-# end
+
+
+# #SAM
+# # MAIN MENU AND GAME SELECTION
+def menu
+  
+  puts "Which game would you like to play?"
+  puts "1) Coin Toss"
+  puts "2) #game2"
+  puts "3) Go Back"
+
+
+  choice = gets.to_i
+  case choice
+    when 1
+      coin_toss
+    when 2
+      game2
+    when 3
+      welcome_screen
+    else 
+      puts "Invalid option, please try again."
+      menu
+  end
+end
+
+
+  
 
 
 
-
+welcome_screen
 
 
 
@@ -51,47 +79,7 @@ end
 
 
 
-## SLOT MACHINE
-# def multiplier(s1, s2, s3)
-#   if s1==s2 && s2==s3
-#     3
-#   elsif s1==s2 || s2==s3 || s1==s3
-#     2
-#   else
-#     0
-#   end
-# end
 
-# def run_slots!
-#   slotImageList = %w[Cherry Orange Plum Bell Melon Bar]
-
-#   print "How much total money would you like to play with today? "
-#   cash = gets.chomp.to_i
-#   loop do
-#     puts "Total cash:  $#{cash}"
-#     print "How much would you like to bet? "
-#     bet = gets.chomp.to_i
-
-#     cash -= bet
-
-#     slotImage1 = slotImageList.sample
-#     slotImage2 = slotImageList.sample
-#     slotImage3 = slotImageList.sample
-
-#     puts "#{slotImage1} - #{slotImage2} - #{slotImage3}"
-
-#     winnings = bet * multiplier(slotImage1, slotImage2, slotImage3)
-#     puts "You have won $#{winnings}"
-
-#     cash += winnings
-
-#     print "Would you like to continue? (yes to continue) "
-#     unless gets.chomp=="yes"
-#       puts "You have ended with $#{cash}"
-#       break
-#     end
-#   end
-# end
 
 # run_slots! if __FILE__==$0
 # Ability to move to and from games
