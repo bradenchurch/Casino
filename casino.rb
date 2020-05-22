@@ -11,15 +11,22 @@
 # Player's bankroll goes up and down with wins and losses
 
 require_relative 'bankroll.rb'
+#require_relative 'coin_toss.rb'
+ require_relative 'slot_machine.rb'
 #Arbitrarily (--Presidentially) give them $1200
-@bankroll = Bankroll.new(1200)
+@@bankroll = Bankroll.new(1200)
+# @coin_toss = CoinToss.new(600, heads)
+ #@slot_machine = SlotMachine.new (1200)
 
+ @run_game = SlotMachine.new(@@bankroll.display_wallet)
+
+  
 def welcome_screen
     puts "WELCOME TO THE RUBY CASINO"
           #display ASCII art here
           #play music
           #Sound on/off option
-          puts "You have #{@bankroll.display_wallet} Donnie Dollars."
+          puts "You have #{@@bankroll.display_wallet} Donnie Dollars."
           puts "What is your gambling nickname?"
             @name = gets.strip.to_s
           puts "Thank you for sharing your stimulus check with us, #{@name}."
@@ -36,16 +43,19 @@ def menu
   puts "1) Coin Toss"
   puts "2) #game2"
   puts "3) Go Back"
-
+  puts "4) Exit"
 
   choice = gets.to_i
   case choice
     when 1
       coin_toss
     when 2
-      game2
+      @run_game.run_slots #.bet(@bankroll)
+      
     when 3
       welcome_screen
+    when 4
+      exit
     else 
       puts "Invalid option, please try again."
       menu

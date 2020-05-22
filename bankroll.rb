@@ -1,3 +1,5 @@
+
+
 class Bankroll
 #  
 
@@ -10,7 +12,7 @@ class Bankroll
 
     def display_wallet
         #show how much money player has
-        puts wallet
+        wallet
     end
 
 end
