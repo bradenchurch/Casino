@@ -14,19 +14,28 @@ require_relative 'bankroll.rb'
 #require_relative 'coin_toss.rb'
  require_relative 'slot_machine.rb'
 #Arbitrarily (--Presidentially) give them $1200
-@@bankroll = Bankroll.new(1200)
+# @@bankroll = 1200
 # @coin_toss = CoinToss.new(600, heads)
  #@slot_machine = SlotMachine.new (1200)
 
- @run_game = SlotMachine.new(@@bankroll.display_wallet)
 
+
+ class Casino
+  
+  attr_accessor :bankroll
+
+  def initialize(bankroll)
+
+    @bankroll = bankroll
+
+  end
   
 def welcome_screen
     puts "WELCOME TO THE RUBY CASINO"
           #display ASCII art here
           #play music
           #Sound on/off option
-          puts "You have #{@@bankroll.display_wallet} Donnie Dollars."
+          puts "You have 1200 Donnie Dollars."
           puts "What is your gambling nickname?"
             @name = gets.strip.to_s
           puts "Thank you for sharing your stimulus check with us, #{@name}."
@@ -40,6 +49,7 @@ end
 def menu
   
   puts "Which game would you like to play?"
+  puts "you have $#{@bankroll}"
   puts "1) Coin Toss"
   puts "2) #game2"
   puts "3) Go Back"
@@ -50,7 +60,8 @@ def menu
     when 1
       coin_toss
     when 2
-      @run_game.run_slots #.bet(@bankroll)
+      @slot_machine = SlotMachine.new(@bankroll)
+      @slot_machine.run_slots
       
     when 3
       welcome_screen
@@ -67,12 +78,13 @@ end
 
 
 
-welcome_screen
 
 
+end
 
 
-
+run_casino = Casino.new(1200)
+run_casino.welcome_screen
 
 
 # #Class = Moving Money

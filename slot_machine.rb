@@ -1,18 +1,20 @@
 
 # SLOT MACHINE
- require_relative 'bankroll.rb'
+ #require_relative 'bankroll.rb'
 # #require_relative 'coin_toss.rb'
- require_relative 'casino.rb'
+ #require_relative 'casino.rb'
 
 #?move require_relatives into class?
 
 class SlotMachine
-    attr_accessor :bet
+
+#require_relative 'casino.rb'
+    attr_accessor :bankroll
 
 
     
-    def initialize(bet)
-        @bet = bet
+    def initialize(bankroll)
+        @bankroll = bankroll
         
     end
 
@@ -29,18 +31,18 @@ class SlotMachine
     def run_slots#!
         slotImageList = %w[Cherry Orange Plum Bell Melon Bar]
         #@bankroll = Bankroll.new(500)
-        puts @@bankroll
-        wallet = @bankroll.display_wallet
+        puts @bankroll
+        
         # print "Total cash:  $#{@bankroll.display_wallet}"
         #wallet = gets.chomp.to_i
         loop do
-             puts "Total cash:  $#{@bankroll.display_wallet}"
+             puts "Total cash:  $#{@bankroll}"
             print "How much would you like to bet? "
             bet = gets.chomp.to_i
 
             #wallet -= bet
             # puts @bankroll.display_wallet #= @bankroll.display_wallet - bet
-            wallet -= bet
+            @bankroll -= bet
 
             slotImage1 = slotImageList.sample
             slotImage2 = slotImageList.sample
@@ -51,11 +53,17 @@ class SlotMachine
             winnings = bet * multiplier(slotImage1, slotImage2, slotImage3)
             puts "You have won $#{winnings}"
 
-            wallet += winnings
+            @bankroll += winnings
 
-            print "Would you like to continue? (yes to continue) "
-            unless gets.chomp=="yes"
-            puts "You have ended with $#{wallet}"
+
+
+            print "Would you like to continue? (y to continue) "
+            unless gets.chomp=="y" 
+            puts "You have ended with $#{@bankroll}"
+                
+                #goto menu in casino.rb
+                @casino = Casino.new(@bankroll)
+                @casino.menu
             break
             end
       end
