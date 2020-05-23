@@ -10,13 +10,10 @@
     # 3 different Classes (place bet/Win/Loss)
 # Player's bankroll goes up and down with wins and losses
 
-require_relative 'bankroll.rb'
-#require_relative 'coin_toss.rb'
+
+require_relative 'coin_toss.rb'
  require_relative 'slot_machine.rb'
-#Arbitrarily (--Presidentially) give them $1200
-# @@bankroll = 1200
-# @coin_toss = CoinToss.new(600, heads)
- #@slot_machine = SlotMachine.new (1200)
+
 
 
 
@@ -44,8 +41,8 @@ end
 
 
 
-# #SAM
-# # MAIN MENU AND GAME SELECTION
+
+
 def menu
   
   puts "Which game would you like to play?"
@@ -58,10 +55,11 @@ def menu
   choice = gets.to_i
   case choice
     when 1
-      coin_toss
+      @coin_toss = CoinToss.new(@bankroll)
+      @coin_toss.play
     when 2
       @slot_machine = SlotMachine.new(@bankroll)
-      @slot_machine.run_slots
+      @slot_machine.play
       
     when 3
       welcome_screen
@@ -87,12 +85,7 @@ run_casino = Casino.new(1200)
 run_casino.welcome_screen
 
 
-# #Class = Moving Money
 
-#     # def bet
-#     # def wins
-#     # def lose
-#     # combine win/lose
 
 # # Bonus Objectives:
 

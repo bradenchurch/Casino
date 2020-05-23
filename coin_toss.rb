@@ -1,48 +1,51 @@
-ch# COIN TOSS GAME
-require_relative 'bankroll.rb'
-class CoinToss
-  attr_accessor :bet, :choose   #takes how much they want to bet on the game and heads/tails
 
-  def initialize(bet, choose)
-    @choose = choose
-    @bet = bet
+class CoinToss
+  attr_accessor :bankroll
+
+
+    
+  def initialize(bankroll)
+      @bankroll = bankroll
+      
   end
 
   def play
-    puts "How much do you want to bet?"
-    bet = gets.to_i 
-    puts "Heads or tails"
-    choose = gets.to_s
-    flip = rand(1)    #random number between 0 and 1
-    if choose = flip
-      win       
-    else
-      lose
-    end
+
+    loop do
+           puts "Total cash:  $#{@bankroll}"
+          print "How much would you like to bet? "
+          bet = gets.chomp.to_i
+          @bankroll -= bet
+
+          puts "1. Heads or 2. tails"
+          choose = gets.to_i
+          flip = rand(2)
+          if flip = 0;
+           puts "it was heads"
+          else puts "it was tails"
+          end
+          if choose === flip + 1
+          winnings = bet * 2
+          puts "You have won $#{winnings}"
+
+          @bankroll += winnings
+          else 
+          puts "You have lost"
+          end
+
+          print "Would you like to continue? (y to continue) "
+          unless gets.chomp=="y" 
+          puts "You have ended with $#{@bankroll}"
+              
+              #goto menu in casino.rb
+              @casino = Casino.new(@bankroll)
+              @casino.menu
+          break
+          end
+        end     
+    
   end
 end
 
 
 
-
-class Move_money
-  def bet
-    "how much?"
-    if bet > wallet
-      "Whoops! Try Again" #invalid_answer method? 
-      bet
-    else
-      #continue
-    end
-  end
-
-  def win
-    "Yay! You've won!"
-    @wallet = @wallet + bet
-  end
-
-  def lose
-    "Boo! Better luck next time!"
-    @wallet = @wallet - bet
-  end
-end
