@@ -1,23 +1,25 @@
+BANKROLL
 
-
-class Bankroll
-#  
-
-    attr_accessor :wallet
+class Bankroll 
+    attr_accessor :bankroll
     
-
-    def initialize(wallet)
-        @wallet = wallet
+    def initialize(bankroll)
+        @bankroll = bankroll
+        @winnings = winnings
     end
 
-    def display_wallet
-        #show how much money player has
-        wallet
+    def make_bet
+        puts "You have $#{@bankroll}."
+        print "How much would you like to bet?"
+        bet = gets.strip.to_i
+        @bankroll -= bet
+
+        # IF bet > @ban
+    end
+        
+    def win
+        puts "Yay! You've won $#{winnings}!"
+        @bankroll += @winnings
     end
 
 end
-
-# amount = Bankroll.new(0)
-# amount.display_wallet
-
-# p amount
