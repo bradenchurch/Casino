@@ -18,14 +18,13 @@ class SlotMachine
     end
 
     def run_slots#!
-        slotImageList = %w[🍒 🍊 🍌 🔔 🍉 💰] #Cherry Orange Plum Bell Melon Bar] #%w is a shortcut for ["Cherry", "Orange", ...]
+        slotImageList = %w[🍒 🍊 🍌 🔔 🍉 💰] ##%w is a shortcut for ["Cherry", "Orange", ...]
         # puts @bankroll
         
         loop do
             puts "You have $#{@bankroll}."
             print "How much would you like to bet?"
             bet = gets.strip.to_i
-            
             @bankroll -= bet
 
             slotImage1 = slotImageList.sample

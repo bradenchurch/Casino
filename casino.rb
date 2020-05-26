@@ -13,7 +13,7 @@
 # Ability to move to and from games
 
 #Possible Bonus Objective:
-# ER: The player should have a Wallet(bakroll) and the Wallet (bankroll) should be its own class with remove and add methods (OOP)
+# ER/DL: The player should have a Wallet(bakroll) and the Wallet (bankroll) should be its own class with remove and add methods (OOP)
   # This is the bankroll. It seems like there is WET code in Slots and Coin Toss:
   # print "How much would you like to bet? "
   # bet = gets.strip.to_i

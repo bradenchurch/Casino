@@ -5,7 +5,6 @@ class Bankroll
     
     def initialize(bankroll)
         @bankroll = bankroll
-        @winnings = winnings
     end
 
     def make_bet
