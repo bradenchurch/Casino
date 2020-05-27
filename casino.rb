@@ -1,8 +1,12 @@
+
 class Wallet
-    attr_accessor :balance
+    attr_accessor :player_name, :balance, :all_players, :array_position
   
-    def initialize(balance)
-      self.balance = balance
+    def initialize(player_name, balance, all_players, array_position)
+        self.player_name = player_name
+        self.balance = balance
+        self.all_players = all_players
+        self.array_position = array_position
     end
   
     def decrease_balance(value)
@@ -26,13 +30,13 @@ class Casino
     end
 
     def menu
-  
+        puts "Welcome #{wallet.player_name}"
         puts "Which game would you like to play?"
         puts "You have $#{wallet.balance}"
         puts "1) Coin Toss"
         puts "2) Slots"
-        # puts "3) Go Back"
-        puts "3) Exit"
+        puts "3) Go Back"
+        puts "4) Exit"
     
         choice = gets.to_i
             case choice
@@ -43,6 +47,12 @@ class Casino
                     play_slots = SlotMachine.new(wallet)
                     play_slots.play
                 when 3
+                    wallet.all_players[wallet.array_position][:balance] = wallet.balance
+                    # p "L@@K: #{wallet.array_position}"
+                    all_players = AllPlayers.new(wallet.all_players)
+                    all_players.run
+                    
+                when 4
                     exit
             end
     end
@@ -101,7 +111,7 @@ class SlotMachine
             
         #     puts wallet.decrease_balance(50)
         # end
-  end
+end
 
 class CoinToss
 
@@ -129,37 +139,95 @@ class CoinToss
 
     
 
-      if choose == flip
-        winnings = 2 * bet
-        puts "Yay! You won $#{winnings}!"
-        wallet.increase_balance(winnings)
-      else
-        puts "Boo! Better luck next time!"
-      end
-        print "Would you like to continue? (y to continue) "
+        if choose == flip
+            winnings = 2 * bet
+            puts "Yay! You won $#{winnings}!"
+            wallet.increase_balance(winnings)
+        else
+            puts "Boo! Better luck next time!"
+        end
+            print "Would you like to continue? (y to continue) "
+        
         unless gets.chomp=="y" 
-          puts "You have ended with $#{wallet.balance}."
-          @casino = Casino.new(wallet)
-          @casino.menu
-          break
+            puts "You have ended with $#{wallet.balance}."
+            @casino = Casino.new(wallet)
+            @casino.menu
+        break
+        end
         end
     end
-  end
 
-
-
+    
 end
-# Players = [
-# {name: , wallet: },
-
-# ]
-wallet1 = Wallet.new(1200)
-wallet2 
 
 
-casino = Casino.new(wallet)
 
-# casino = Casino.new(Wallet.new(1200))
-#puts wallet.balance
+   
+    
 
-casino.menu
+
+
+
+
+
+class AllPlayers
+    
+    attr_accessor :all_players
+
+    def initialize (all_players)
+        self.all_players = all_players
+    end
+
+    
+        
+    def run
+        
+        
+   
+        
+
+
+        puts 'Select Your Player'
+        puts '1. (Create A New Player)'
+        all_players.each_with_index { |item, index| puts "#{index +2}. #{item[:name]} $#{item[:balance]}"}
+
+
+        choice = gets.chomp.to_i
+        if choice == 1
+        
+            puts 'enter name'
+
+            new_name = gets.chomp.to_s 
+            
+            all_players.unshift({name: new_name, balance: 700})
+
+            
+
+            wallet = Wallet.new(all_players.first[:name], all_players.first[:balance], all_players, 0)
+            casino = Casino.new(wallet)
+            casino.menu
+
+        elsif (choice -2) <= all_players.length
+            
+            x = (choice - 2)
+
+            current_name = all_players[x][:name]
+            current_balance = all_players[x][:balance]
+            array_position = x
+
+            
+            
+            wallet = Wallet.new(current_name, current_balance, all_players, array_position)
+            casino = Casino.new(wallet)
+            casino.menu
+        
+        else
+            puts 'Invalid Selection'
+        end
+    
+
+    end
+end
+
+all_players = AllPlayers.new([])
+    all_players.run
