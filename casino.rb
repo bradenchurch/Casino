@@ -1,3 +1,5 @@
+#FINAL VERSION
+ # BRADEN, SAM, DANNY, ERNIE
 
 class Wallet
   attr_accessor :player_name, :balance, :all_players, :array_position
