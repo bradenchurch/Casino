@@ -1,89 +1,208 @@
-# CASINO PROJOECT
 
-# Basic Objectives - ALL MET:
-# Start game player has a name and an initial bankroll
-# Player can go to different games via menu
-#   1.Coin Toss
-#   2. Slots
-# Player places bet and wins / loses (hint: rand)
-# Player's bankroll goes up and down with wins and losses
+class Wallet
+  attr_accessor :player_name, :balance, :all_players, :array_position
 
-# Completed Bonus Objectives:
-# Player's bankroll persists while moving from game to game
-# Ability to move to and from games
-
-#Possible Bonus Objective:
-# ER/DL: The player should have a Wallet(bakroll) and the Wallet (bankroll) should be its own class with remove and add methods (OOP)
-  # This is the bankroll. It seems like there is WET code in Slots and Coin Toss:
-  # print "How much would you like to bet? "
-  # bet = gets.strip.to_i
-  #@bankroll -= bet
-  #@bankroll += winnings
-
-require_relative 'coin_toss.rb'
-require_relative 'slot_machine.rb'
-
-class Casino
-  attr_accessor :bankroll
-
-  def initialize(bankroll)
-    @bankroll = bankroll
-  end
-  
-  def welcome_screen
-    puts "WELCOME TO THE RUBY CASINO"
-    #display ASCII art here
-    #play music
-    #Sound on/off option
-    puts "You have #{@bankroll} Donnie Dollars."
-    puts "What is your gambling nickname?"
-    @name = gets.strip.to_s
-    puts "Thank you for sharing your stimulus check with us, #{@name}."
-    menu
+  def initialize(player_name, balance, all_players, array_position)
+      self.player_name = player_name
+      self.balance = balance
+      self.all_players = all_players
+      self.array_position = array_position
   end
 
-  # # MAIN MENU AND GAME SELECTION
-  def menu
-  
-    puts "Which game would you like to play?"
-    puts "You have $#{@bankroll}"
-    puts "1) Coin Toss"
-    puts "2) Slots"
-    puts "3) Go Back"
-    puts "4) Exit"
+  def decrease_balance(value)
+    self.balance = balance - value
+  end
 
-    choice = gets.to_i
-    case choice
-      when 1
-        @coin_toss = CoinToss.new(@bankroll)
-        @coin_toss.play
-      when 2
-        @slot_machine = SlotMachine.new(@bankroll)
-        @slot_machine.run_slots
-      when 3
-        welcome_screen
-      when 4
-        exit
-      else 
-        puts "Invalid option, please try again."
-        menu
-    end
+  def increase_balance(value)
+    self.balance = balance + value
+  end
+
+  def show_balance
+      puts "You have $#{self.balance}!"
   end
 end
 
-run_casino = Casino.new(1200)
-run_casino.welcome_screen
+class Casino
+  attr_accessor :wallet
 
-# # Bonus Objectives:
-# Find a gem that allows you to play sound and find casino sounds that will play on each game change/events
-# Gem discovery: go to rubygems.org and find more gems that you want to implement in your project and use
-# Find ASCII Art and put it into your games/menus to make it more fun for the end user
-# Ability to switch players (player menu, bankroll information)
-# Player's bankroll persists if you switch to different players
-# Random events occur when changing games that can increase or decrease player's bankroll
-# Roulette
-# Craps
-# Build a card deck 
-# Card games (Blackjack, Poker, Casino War, etc...)
-# Any other Casino game you can think of
-# Create your own game
+  def initialize(wallet)
+      self.wallet = wallet
+  end
+
+  def play_slots
+    SlotMachine.new(wallet)
+  end
+
+  def menu
+      puts "Welcome #{wallet.player_name}"
+      puts "Which game would you like to play?"
+      wallet.show_balance
+      puts "1) Coin Toss"
+      puts "2) Slots"
+      puts "3) Player Selection"
+      puts "4) Exit"
+  
+      choice = gets.to_i
+          case choice
+              when 1
+                  play_coin = CoinToss.new(wallet)
+                  play_coin.play
+              when 2
+                  play_slots = SlotMachine.new(wallet)
+                  play_slots.play
+              when 3
+                  wallet.all_players[wallet.array_position][:balance] = wallet.balance
+                  all_players = AllPlayers.new(wallet.all_players)
+                  all_players.run
+                  
+              when 4
+                  exit
+          end
+  end
+end
+
+class SlotMachine
+      attr_accessor :wallet
+    
+      def initialize(wallet)
+        self.wallet = wallet
+      end
+
+      def multiplier(s1, s2, s3)
+            if s1==s2 && s2==s3
+                2.6
+            elsif s1==s2 || s2==s3 || s1==s3
+                1.9
+            else
+                0
+            end
+      end
+    
+      def play
+            slotImageList = %w[🍒 🍊 🍌 🔔 🍉 💰]
+            
+            loop do
+                wallet.show_balance
+              
+                print "How much would you like to bet?"
+                bet = gets.strip.to_i
+                wallet.decrease_balance(bet)
+
+                  
+                slotImage1 = slotImageList.sample
+                slotImage2 = slotImageList.sample
+                slotImage3 = slotImageList.sample
+    
+                puts "#{slotImage1} - #{slotImage2} - #{slotImage3}"
+    
+                winnings = bet * multiplier(slotImage1, slotImage2, slotImage3)
+                puts "You have won $#{winnings}"
+                wallet.increase_balance(winnings)
+
+                print "Would you like to continue? (y to continue) "
+                unless gets.chomp=="y" 
+                puts "You have ended with $#{wallet.balance}"
+                    
+                      casino = Casino.new(wallet)
+                    casino.menu
+                break
+                end
+              end
+        end
+end
+
+class CoinToss
+
+attr_accessor :wallet
+    
+def initialize(wallet)
+  self.wallet = wallet
+end
+
+def play
+  loop do
+    wallet.show_balance
+    print "How much would you like to bet?"
+    bet = gets.strip.to_i
+    wallet.decrease_balance(bet)
+
+    puts "Your bet: $#{bet}"
+    puts "Choose Heads or Tails:"
+    puts "1) Heads"
+    puts "2) Tails"
+
+    choose = gets.strip.to_i
+
+    flip = rand(1..2).to_i #random 1 or 2
+
+  
+
+      if choose == flip
+          winnings = (2 * bet)
+          puts "Yay! You won $#{winnings}!"
+          wallet.increase_balance(winnings)
+      else
+          puts "Boo! Better luck next time!"
+      end
+          print "Would you like to continue? (y to continue) "
+      
+      unless gets.chomp=="y" 
+          puts "You have ended with $#{wallet.balance}."
+          @casino = Casino.new(wallet)
+          @casino.menu
+      break
+      end
+      end
+  end
+
+  
+end
+
+
+class AllPlayers
+  
+  attr_accessor :all_players
+
+  def initialize (all_players)
+      self.all_players = all_players
+  end
+
+  def run
+      puts "WELCOME TO THE TIGER KING CASINO"
+      puts 'Select Your Player'
+      puts '1. (Create A New Player)'
+      all_players.each_with_index { |item, index| puts "#{index +2}. #{item[:name]} $#{item[:balance]}"}
+
+      choice = gets.chomp.to_i
+      if choice == 1
+      
+          puts "What is your gambling nickname?"
+          new_name = gets.chomp.to_s 
+          
+          all_players.unshift({name: new_name, balance: 700})
+
+          wallet = Wallet.new(all_players.first[:name], all_players.first[:balance], all_players, 0)
+          casino = Casino.new(wallet)
+          casino.menu
+
+      elsif (choice -2) <= all_players.length
+          
+          x = (choice - 2)
+
+          current_name = all_players[x][:name]
+          current_balance = all_players[x][:balance]
+          array_position = x
+          
+          
+          wallet = Wallet.new(current_name, current_balance, all_players, array_position)
+          casino = Casino.new(wallet)
+          casino.menu
+      
+      else
+          puts 'Invalid Selection'
+      end
+  end
+end
+
+all_players = AllPlayers.new([])
+all_players.run
